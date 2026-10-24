@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Search a worldwide food and calculate its portion calories",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "food search",
+      "regional cuisine filtering",
+      "portion size calculator",
+      "calorie calculation"
+    ],
+    "description": "Verifies the user can find a known food, choose a serving size and see its estimated calories.",
+    "steps": [
+      "Search for Cooked white rice",
+      "Select Cooked white rice",
+      "Set serving size to 200 grams"
+    ],
+    "expected": "The portion calculator shows 260 kcal for 200 g of cooked white rice."
+  },
+  {
+    "name": "Log a food and view daily meal totals",
+    "viewport": "desktop",
+    "covers": [
+      "add food to meal log",
+      "daily calorie total",
+      "meal grouping",
+      "date selection"
+    ],
+    "description": "Verifies adding a food updates the selected day's total and the meal log.",
+    "steps": [
+      "Select a food and set its serving size",
+      "Add it to Lunch",
+      "Open Meal log"
+    ],
+    "expected": "The food appears under Lunch and the daily snapshot reflects its calculated calories."
+  },
+  {
+    "name": "Create a custom food with validation",
+    "viewport": "mobile",
+    "covers": [
+      "custom food creation",
+      "custom calorie calculation",
+      "invalid custom food guardrail",
+      "mobile layout"
+    ],
+    "description": "Verifies custom food values can be entered and invalid portions are not accepted.",
+    "steps": [
+      "Open Add custom food",
+      "Enter a food name and kcal per 100 g with a positive serving size",
+      "Save the custom food and inspect its portion calculator"
+    ],
+    "expected": "The custom food is added to the food list with its entered kcal-per-100-g value; invalid or empty values cannot be saved."
+  },
+  {
+    "name": "Remove a logged food and update totals",
+    "viewport": "desktop",
+    "covers": ["remove food from meal log", "recalculate daily total"],
+    "description": "Verifies removing a logged entry updates both the log and the daily calorie summary.",
+    "setup": ["Add a food to the selected day's Lunch"],
+    "steps": ["Open Meal log", "Remove the logged food"],
+    "expected": "The food entry disappears and the daily total decreases by that entry's calories."
+  }
+]
