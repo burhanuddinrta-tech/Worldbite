@@ -894,4 +894,264 @@ function App() {
               <Search size={19} />
               <input
                 value={query}
-                
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search foods, dishes or cuisine…"
+              />
+              {query && (
+                <button className="icon-btn" onClick={() => setQuery('')}>
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            <label className="region-select">
+              <Globe2 size={17} />
+              <select value={region} onChange={e => setRegion(e.target.value)}>
+                {regions.map(r => (
+                  <option key={r}>{r}</option>
+                ))}
+              </select>
+              <ChevronDown size={15} />
+            </label>
+          </div>
+          <div className="region-chips">
+            {regions.slice(1, 7).map(r => (
+              <button
+                key={r}
+                className={region === r ? 'region-chip active' : 'region-chip'}
+                onClick={() => setRegion(region === r ? 'All regions' : r)}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
+          <div className="results-head">
+            <span>{filtered.length} foods to explore</span>
+            <div className="tabs">
+              <button
+                className={tab === 'foods' ? 'tab active' : 'tab'}
+                onClick={() => setTab('foods')}
+              >
+                Explore foods
+              </button>
+              <button
+                className={tab === 'log' ? 'tab active' : 'tab'}
+                onClick={() => setTab('log')}
+              >
+                Meal log ({todays.length})
+              </button>
+            </div>
+          </div>
+          {tab === 'foods' ? (
+            <div className="food-grid">
+              {filtered.map(f => (
+                <button
+                  className={
+                    selected?.id === f.id ? 'food-card chosen' : 'food-card'
+                  }
+                  key={f.id}
+                  onClick={() => {
+                    setSelected(f);
+                    setGrams(f.portion);
+                  }}
+                >
+                  <div className="food-emoji">{f.emoji}</div>
+                  <div className="food-info">
+                    <span className="food-region">{f.region}</span>
+                    <strong>{f.name}</strong>
+                    <span className="food-category">{f.category}</span>
+                  </div>
+                  <div className="food-kcal">
+                    <strong>{f.kcal}</strong>
+                    <span>kcal / 100 g</span>
+                  </div>
+                  <div className="card-arrow">
+                    {selected?.id === f.id ? (
+                      <Check size={17} />
+                    ) : (
+                      <Plus size={17} />
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="log-panel">
+              {todays.length === 0 ? (
+                <div className="empty-state">
+                  <span>🥣</span>
+                  <strong>No foods logged yet</strong>
+                  <p>Choose a food from Explore foods to start your log.</p>
+                  <button
+                    className="primary-btn"
+                    onClick={() => setTab('foods')}
+                  >
+                    Explore foods
+                  </button>
+                </div>
+              ) : (
+                meals.map(m => {
+                  const items = todays.filter(e => e.meal === m);
+                  if (!items.length) return null;
+                  return (
+                    <div className="meal-group" key={m}>
+                      <div className="meal-group-head">
+                        <strong>{m}</strong>
+                        <span>
+                          {Math.round(
+                            items.reduce(
+                              (s, e) => s + (e.food.kcal * e.grams) / 100,
+                              0
+                            )
+                          )}{' '}
+                          kcal
+                        </span>
+                      </div>
+                      {items.map(e => (
+                        <div className="log-row" key={e.id}>
+                          <span className="log-emoji">{e.food.emoji}</span>
+                          <div className="log-name">
+                            <strong>{e.food.name}</strong>
+                            <span>
+                              {e.grams} g ·{' '}
+                              {Math.round((e.food.kcal * e.grams) / 100)} kcal
+                            </span>
+                          </div>
+                          <button
+                            className="icon-btn delete-btn"
+                            onClick={() => removeEntry(e.id)}
+                            aria-label={`Remove ${e.food.name}`}
+                          >
+                            <Trash2 size={17} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
+          {filtered.length === 0 && tab === 'foods' && (
+            <div className="empty-state">
+              <span>🔎</span>
+              <strong>No matches found</strong>
+              <p>Try a different food name or choose another region.</p>
+              <button
+                className="text-btn"
+                onClick={() => {
+                  setQuery('');
+                  setRegion('All regions');
+                }}
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+        </section>
+        <section className="trust-note">
+          <div className="trust-icon">
+            <Leaf size={20} />
+          </div>
+          <div>
+            <strong>A useful estimate, not a lab measurement</strong>
+            <p>
+              Calories vary with ingredients, cooking method, oil, sauces and
+              serving size. Values shown are approximate reference averages. For
+              packaged food, use its nutrition label; for homemade dishes, weigh
+              ingredients for a closer estimate.
+            </p>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <span className="footer-brand">worldbite calories</span>
+        <span>Explore food. Understand portions. Enjoy your plate.</span>
+      </footer>
+      {selected && (
+        <div className="modal-backdrop" onClick={() => setSelected(null)}>
+          <section className="portion-modal" onClick={e => e.stopPropagation()}>
+            <button
+              className="modal-close icon-btn"
+              onClick={() => setSelected(null)}
+              aria-label="Close"
+            >
+              <X size={19} />
+            </button>
+            <div className="modal-food">
+              <span>{selected.emoji}</span>
+              <div>
+                <span className="food-region">
+                  {selected.region} · {selected.category}
+                </span>
+                <h2>{selected.name}</h2>
+                <p>{selected.kcal} kcal per 100 g</p>
+              </div>
+            </div>
+            <div className="portion-divider" />
+            <label className="meal-label">
+              Add to meal
+              <select value={meal} onChange={e => setMeal(e.target.value)}>
+                {meals.map(m => (
+                  <option key={m}>{m}</option>
+                ))}
+              </select>
+            </label>
+            <div className="portion-label">
+              <label htmlFor="portion">Serving size</label>
+              <strong>
+                {grams} <small>g</small>
+              </strong>
+            </div>
+            <input
+              id="portion"
+              className="portion-slider"
+              type="range"
+              min="10"
+              max="700"
+              step="5"
+              value={grams}
+              onChange={e => setGrams(Number(e.target.value))}
+            />
+            <div className="slider-limits">
+              <span>10 g</span>
+              <span>700 g</span>
+            </div>
+            <div className="grams-entry">
+              <label>
+                Enter grams
+                <input
+                  type="number"
+                  min="1"
+                  max="10000"
+                  value={grams}
+                  onChange={e =>
+                    setGrams(Math.max(1, Number(e.target.value) || 1))
+                  }
+                />
+              </label>
+              <div className="portion-result">
+                <span>Estimated calories</span>
+                <strong>
+                  {Math.round((selected.kcal * grams) / 100)}{' '}
+                  <small>kcal</small>
+                </strong>
+              </div>
+            </div>
+            {selected.note && <p className="food-warning">ⓘ {selected.note}</p>}
+            <button className="primary-btn add-to-log" onClick={addEntry}>
+              Add to {meal.toLowerCase()} <Plus size={17} />
+            </button>
+          </section>
+        </div>
+      )}
+      {notice && (
+        <div className="toast">
+          <Check size={17} />
+          {notice}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
