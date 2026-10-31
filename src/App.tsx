@@ -800,8 +800,16 @@ function App() {
         image.onerror = () => { URL.revokeObjectURL(sourceUrl); reject(new Error('Could not open this photo.')); };
         image.src = sourceUrl;
       });
-      const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: imageData }) });
-      const result = await response.json();
+      const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ image: imageData }) });
+      const responseText = await response.text();
+      let result: any;
+      try {
+        result = JSON.parse(responseText);
+      } catch {
+        throw new Error(responseText.trim().startsWith('<')
+          ? 'Snap AI API is not deployed correctly yet. The server returned a webpage instead of JSON. Please try again after the backend deployment is fixed.'
+          : 'Snap AI returned an unreadable response. Please try again.');
+      }
       if (!response.ok) throw new Error(result.error || 'Food recognition is unavailable right now.');
       const food: Food = { id: 'snap-' + crypto.randomUUID(), name: String(result.name || 'Identified dish'), region: String(result.region || 'Everywhere'), category: 'Snap AI', kcal: Math.max(0, Math.round(Number(result.kcalPer100g) || 0)), unit: '100 g', portion: Math.max(1, Math.round(Number(result.portionGrams) || 150)), emoji: '📸', note: 'AI estimate from a photo. Actual calories vary with ingredients and portion size.' };
       if (!food.kcal) throw new Error('The photo result did not include a usable calorie estimate. Try a clearer photo.');
