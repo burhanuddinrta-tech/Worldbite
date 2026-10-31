@@ -659,3 +659,40 @@ align-items: flex-start;
 flex-direction: column;
 }
   }
+
+
+/* WorldBite updates and serving selector */
+.updates-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: #e7f3e8;
+  color: #237a58;
+  font-weight: 800;
+}
+.updates-card {
+  margin: 0 auto 20px;
+  padding: 22px 24px;
+  border: 1px solid #cfe4d1;
+  border-radius: 20px;
+  background: #f0f8f0;
+}
+.updates-card h2 { margin: 7px 0 10px; }
+.updates-card ul { margin: 10px 0 16px; padding-left: 20px; color: #47695a; line-height: 1.8; }
+.serving-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 22px 0 14px;
+}
+.serving-controls label { display: grid; gap: 8px; font-size: 13px; color: #47695a; }
+.serving-controls select, .serving-controls input { width: 100%; }
+.serving-result {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f0f8ef;
+}
+@media (max-width: 480px) {
+  .serving-controls { grid-template-columns: 1fr; }
+}
