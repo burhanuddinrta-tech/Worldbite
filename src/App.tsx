@@ -729,6 +729,9 @@ function App() {
   const [customRegion, setCustomRegion] = useState('Everywhere');
   const [customFoods, setCustomFoods] = useState<Food[]>([]);
   const [notice, setNotice] = useState('');
+  const [snapImage, setSnapImage] = useState('');
+  const [snapBusy, setSnapBusy] = useState(false);
+  const [snapError, setSnapError] = useState('');
   const allFoods = useMemo(() => [...foods, ...customFoods], [customFoods]);
   const filtered = useMemo(
     () =>
@@ -746,6 +749,28 @@ function App() {
     (sum, e) => sum + (e.food.kcal * e.grams) / 100,
     0
   );
+  const analyzeSnap = async (file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { setSnapError('Please choose an image file.'); return; }
+    if (file.size > 6 * 1024 * 1024) { setSnapError('Please choose an image smaller than 6 MB.'); return; }
+    setSnapBusy(true); setSnapError('');
+    setSnapImage(URL.createObjectURL(file));
+    try {
+      const imageData = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(new Error('Could not read this image.'));
+        reader.readAsDataURL(file);
+      });
+      const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: imageData }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Food recognition is unavailable right now.');
+      const food: Food = { id: 'snap-' + crypto.randomUUID(), name: String(result.name || 'Identified dish'), region: String(result.region || 'Everywhere'), category: 'Snap AI', kcal: Math.max(0, Math.round(Number(result.kcalPer100g) || 0)), unit: '100 g', portion: Math.max(1, Math.round(Number(result.portionGrams) || 150)), emoji: '📸', note: 'AI estimate from a photo. Actual calories vary with ingredients and portion size.' };
+      if (!food.kcal) throw new Error('The photo result did not include a usable calorie estimate. Try a clearer photo.');
+      setSelected(food); setGrams(food.portion); setMeal('Lunch');
+    } catch (error) { setSnapError(error instanceof Error ? error.message : 'Could not analyze this photo.'); }
+    finally { setSnapBusy(false); }
+  };
   const addEntry = () => {
     if (!selected || grams <= 0) return;
     const next = [
@@ -845,6 +870,14 @@ function App() {
               <Flame size={15} /> kcal made simple
             </div>
           </div>
+        </section>
+        <section className="snap-card" style={{ marginTop: 24, padding: 22, borderRadius: 20, background: "#f0f8f3" }}>
+          <div className="daily-top"><div><span className="section-kicker">WORLD BITE SNAP</span><h2>Scan your plate</h2><p>Take a photo or choose a food picture to estimate the dish and calories.</p></div>
+          <label className="custom-btn" style={{ cursor: snapBusy ? "wait" : "pointer" }}>{snapBusy ? "Analyzing…" : "📸 Snap food"}<input type="file" accept="image/*" capture="environment" disabled={snapBusy} onChange={e => analyzeSnap(e.target.files?.[0])} style={{ display: "none" }} /></label></div>
+          {snapImage && <img src={snapImage} alt="Selected meal" style={{ display: "block", width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 16, marginTop: 14 }} />}
+          {snapBusy && <p role="status">Looking at the dish and estimating a typical portion…</p>}
+          {snapError && <p role="alert" style={{ color: "#b42318", marginTop: 10 }}>{snapError}</p>}
+          <p style={{ fontSize: 12, opacity: 0.72, marginTop: 10 }}>Photo estimates can be wrong, especially when ingredients or portion sizes are hidden. Check the result before adding it to your log.</p>
         </section>
         <section className="daily-card">
           <div className="daily-top">
