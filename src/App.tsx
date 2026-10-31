@@ -598,7 +598,7 @@ const foods: Food[] = [
     unit: '100 g',
     portion: 240,
     emoji: '🍊',
-  },,
+  },
   { id: 'omelette', name: 'Plain omelette', region: 'Everywhere', category: 'Egg', kcal: 154, unit: '100 g', portion: 100, emoji: '🍳', note: 'Approximate recipe average; ingredients and cooking method vary' },
   { id: 'scrambled-eggs', name: 'Scrambled eggs', region: 'Everywhere', category: 'Egg', kcal: 148, unit: '100 g', portion: 120, emoji: '🍳', note: 'Approximate recipe average; ingredients and cooking method vary' },
   { id: 'egg-bhurji', name: 'Egg bhurji', region: 'South Asia', category: 'Egg', kcal: 170, unit: '100 g', portion: 150, emoji: '🍳', note: 'Approximate recipe average; ingredients and cooking method vary' },
