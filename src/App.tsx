@@ -681,7 +681,7 @@ const foods: Food[] = [
   { id: 'lamb-mandi', name: 'Lamb mandi', region: 'Middle East', category: 'Mutton', kcal: 210, unit: '100 g', portion: 350, emoji: '🍖', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'chicken-madhbi', name: 'Yemeni chicken madhbi', region: 'Middle East', category: 'Chicken', kcal: 190, unit: '100 g', portion: 300, emoji: '🍗', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'mutabbal', name: 'Mutabbal (smoky eggplant dip)', region: 'Middle East', category: 'Dip', kcal: 150, unit: '100 g', portion: 80, emoji: '🥣', note: 'Approximate recipe average; family recipes and preparation vary' },
-  { id: 'manakish-zaatar', name: 'Manakish za'atar', region: 'Middle East', category: 'Bread', kcal: 280, unit: '100 g', portion: 120, emoji: '🫓', note: 'Approximate recipe average; family recipes and preparation vary' },
+  { id: 'manakish-zaatar', name: 'Manakish za’atar', region: 'Middle East', category: 'Bread', kcal: 280, unit: '100 g', portion: 120, emoji: '🫓', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'kunafa', name: 'Kunafa', region: 'Middle East', category: 'Dessert', kcal: 350, unit: '100 g', portion: 120, emoji: '🍰', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'luqaimat', name: 'Luqaimat', region: 'Middle East', category: 'Dessert', kcal: 400, unit: '100 g', portion: 100, emoji: '🍩', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'harees', name: 'Arabian harees', region: 'Middle East', category: 'Main', kcal: 150, unit: '100 g', portion: 250, emoji: '🥣', note: 'Approximate recipe average; family recipes and preparation vary' },
