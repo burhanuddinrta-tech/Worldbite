@@ -756,11 +756,29 @@ function App() {
     setSnapBusy(true); setSnapError('');
     setSnapImage(URL.createObjectURL(file));
     try {
+      // Resize/compress photos before upload so they fit serverless request limits.
+      const sourceUrl = URL.createObjectURL(file);
       const imageData = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result || ''));
-        reader.onerror = () => reject(new Error('Could not read this image.'));
-        reader.readAsDataURL(file);
+        const image = new Image();
+        image.onload = () => {
+          const scale = Math.min(1, 1280 / Math.max(image.width, image.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          const context = canvas.getContext('2d');
+          if (!context) { URL.revokeObjectURL(sourceUrl); reject(new Error('This browser could not prepare the photo.')); return; }
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(blob => {
+            URL.revokeObjectURL(sourceUrl);
+            if (!blob) { reject(new Error('Could not compress this photo.')); return; }
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ''));
+            reader.onerror = () => reject(new Error('Could not read the prepared photo.'));
+            reader.readAsDataURL(blob);
+          }, 'image/jpeg', 0.82);
+        };
+        image.onerror = () => { URL.revokeObjectURL(sourceUrl); reject(new Error('Could not open this photo.')); };
+        image.src = sourceUrl;
       });
       const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: imageData }) });
       const result = await response.json();
