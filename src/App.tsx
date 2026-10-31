@@ -28,6 +28,8 @@ type Entry = {
   id: string;
   food: Food;
   grams: number;
+  servingAmount?: number;
+  servingUnit?: string;
   meal: string;
   date: string;
 };
@@ -719,6 +721,9 @@ function App() {
   const [meal, setMeal] = useState('Lunch');
   const [selected, setSelected] = useState<Food | null>(null);
   const [grams, setGrams] = useState(150);
+  const [servingUnit, setServingUnit] = useState<'plate' | 'piece' | 'g' | 'ml' | 'cup'>('plate');
+  const [servingAmount, setServingAmount] = useState(1);
+  const [showUpdates, setShowUpdates] = useState(false);
   const [entries, setEntries] = useState<Entry[]>(loadEntries);
   const [day, setDay] = useState(today());
   const [tab, setTab] = useState<'foods' | 'log'>('foods');
@@ -749,6 +754,21 @@ function App() {
     (sum, e) => sum + (e.food.kcal * e.grams) / 100,
     0
   );
+  const isDrink = (food: Food) => food.category.toLowerCase() === 'drink';
+  const gramsForServing = (food: Food, unit: string, amount: number) => {
+    if (unit === 'plate') return amount * 300;
+    if (unit === 'piece') return amount * food.portion;
+    if (unit === 'cup') return amount * 240;
+    if (unit === 'ml') return amount;
+    return amount;
+  };
+  const selectFood = (food: Food) => {
+    setSelected(food);
+    const drink = isDrink(food);
+    setServingUnit(drink ? 'ml' : 'plate');
+    setServingAmount(drink ? food.portion : 1);
+    setGrams(drink ? food.portion : 300);
+  };
   const analyzeSnap = async (file?: File) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) { setSnapError('Please choose an image file.'); return; }
@@ -785,15 +805,16 @@ function App() {
       if (!response.ok) throw new Error(result.error || 'Food recognition is unavailable right now.');
       const food: Food = { id: 'snap-' + crypto.randomUUID(), name: String(result.name || 'Identified dish'), region: String(result.region || 'Everywhere'), category: 'Snap AI', kcal: Math.max(0, Math.round(Number(result.kcalPer100g) || 0)), unit: '100 g', portion: Math.max(1, Math.round(Number(result.portionGrams) || 150)), emoji: '📸', note: 'AI estimate from a photo. Actual calories vary with ingredients and portion size.' };
       if (!food.kcal) throw new Error('The photo result did not include a usable calorie estimate. Try a clearer photo.');
-      setSelected(food); setGrams(food.portion); setMeal('Lunch');
+      selectFood(food); setMeal('Lunch');
     } catch (error) { setSnapError(error instanceof Error ? error.message : 'Could not analyze this photo.'); }
     finally { setSnapBusy(false); }
   };
   const addEntry = () => {
-    if (!selected || grams <= 0) return;
+    if (!selected || servingAmount <= 0) return;
+    const actualGrams = gramsForServing(selected, servingUnit, servingAmount);
     const next = [
       ...entries,
-      { id: crypto.randomUUID(), food: selected, grams, meal, date: day },
+      { id: crypto.randomUUID(), food: selected, grams: actualGrams, servingAmount, servingUnit, meal, date: day },
     ];
     setEntries(next);
     localStorage.setItem('worldbite-entries', JSON.stringify(next));
@@ -830,6 +851,8 @@ function App() {
     };
     setCustomFoods([...customFoods, food]);
     setSelected(food);
+    setServingUnit('g');
+    setServingAmount(g);
     setGrams(g);
     setCustomOpen(false);
     setQuery('');
@@ -848,11 +871,12 @@ function App() {
             worldbite<span className="brand-light"> calories</span>
           </span>
         </a>
-        <span className="top-tag">
-          <Globe2 size={15} /> FOOD FROM EVERYWHERE
-        </span>
+        <button className="top-tag updates-link" onClick={() => setShowUpdates(v => !v)}>
+          <Leaf size={15} /> WHAT'S NEW
+        </button>
       </header>
       <main>
+        {showUpdates && <section className="updates-card" aria-label="Latest updates"><div><span className="section-kicker">WORLD BITE UPDATES</span><h2>What's new</h2></div><ul><li><strong>Snap AI:</strong> identify a dish from a photo and review its estimated calories.</li><li><strong>Flexible portions:</strong> log drinks by ml or cup, and foods by plate, piece or grams.</li><li><strong>Expanded food library:</strong> more Indian, Bohri, Arabian and global dishes.</li></ul><button className="text-btn" onClick={() => setShowUpdates(false)}>Close updates</button></section>}
         <section className="hero">
           <div className="hero-copy">
             <div className="eyebrow">
@@ -1091,8 +1115,7 @@ function App() {
                   }
                   key={f.id}
                   onClick={() => {
-                    setSelected(f);
-                    setGrams(f.portion);
+                    selectFood(f);
                   }}
                 >
                   <div className="food-emoji">{f.emoji}</div>
@@ -1153,7 +1176,7 @@ function App() {
                           <div className="log-name">
                             <strong>{e.food.name}</strong>
                             <span>
-                              {e.grams} g ·{' '}
+                              {e.servingAmount ?? e.grams} {e.servingUnit === 'ml' ? 'ml' : e.servingUnit === 'cup' ? 'cup(s)' : e.servingUnit === 'plate' ? 'plate(s)' : e.servingUnit === 'piece' ? 'piece(s)' : 'g'} ·{' '}
                               {Math.round((e.food.kcal * e.grams) / 100)} kcal
                             </span>
                           </div>
@@ -1237,46 +1260,19 @@ function App() {
                 ))}
               </select>
             </label>
-            <div className="portion-label">
-              <label htmlFor="portion">Serving size</label>
-              <strong>
-                {grams} <small>g</small>
-              </strong>
-            </div>
-            <input
-              id="portion"
-              className="portion-slider"
-              type="range"
-              min="10"
-              max="700"
-              step="5"
-              value={grams}
-              onChange={e => setGrams(Number(e.target.value))}
-            />
-            <div className="slider-limits">
-              <span>10 g</span>
-              <span>700 g</span>
-            </div>
-            <div className="grams-entry">
-              <label>
-                Enter grams
-                <input
-                  type="number"
-                  min="1"
-                  max="10000"
-                  value={grams}
-                  onChange={e =>
-                    setGrams(Math.max(1, Number(e.target.value) || 1))
-                  }
-                />
+            <div className="serving-controls">
+              <label className="serving-unit-label">Serving unit
+                <select value={servingUnit} onChange={e => { const unit = e.target.value as typeof servingUnit; setServingUnit(unit); setServingAmount(unit === 'plate' ? 1 : unit === 'piece' ? 1 : unit === 'cup' ? 1 : unit === 'ml' ? selected.portion : 100); }}>
+                  {isDrink(selected) ? <><option value="ml">Millilitres (ml)</option><option value="cup">Cup (240 ml)</option></> : <><option value="plate">Plate (approx. 300 g)</option><option value="piece">Piece (approx. 1 piece)</option><option value="g">Grams (g)</option></>}
+                </select>
               </label>
-              <div className="portion-result">
-                <span>Estimated calories</span>
-                <strong>
-                  {Math.round((selected.kcal * grams) / 100)}{' '}
-                  <small>kcal</small>
-                </strong>
-              </div>
+              <label className="serving-amount-label">{servingUnit === 'plate' ? 'Number of plates' : servingUnit === 'piece' ? 'Number of pieces' : servingUnit === 'cup' ? 'Number of cups' : servingUnit === 'ml' ? 'Amount (ml)' : 'Amount (g)'}
+                <input type="number" min="0.1" step="0.1" value={servingAmount} onChange={e => setServingAmount(Math.max(0.1, Number(e.target.value) || 0.1))} />
+              </label>
+            </div>
+            <div className="portion-result serving-result">
+              <span>Estimated calories · approx. {Math.round(gramsForServing(selected, servingUnit, servingAmount))} g equivalent</span>
+              <strong>{Math.round(selected.kcal * gramsForServing(selected, servingUnit, servingAmount) / 100)} <small>kcal</small></strong>
             </div>
             {selected.note && <p className="food-warning">ⓘ {selected.note}</p>}
             <button className="primary-btn add-to-log" onClick={addEntry}>
