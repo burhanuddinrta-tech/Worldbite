@@ -648,7 +648,7 @@ const foods: Food[] = [
   { id: 'shakshuka', name: 'Shakshuka', region: 'Middle East', category: 'Egg', kcal: 110, unit: '100 g', portion: 220, emoji: '🍳', note: 'Approximate recipe average; ingredients and cooking method vary' },
   { id: 'bobotie', name: 'South African bobotie', region: 'Africa', category: 'Main', kcal: 180, unit: '100 g', portion: 220, emoji: '🥘', note: 'Approximate recipe average; ingredients and cooking method vary' },
   { id: 'poutine', name: 'Poutine', region: 'North America', category: 'Main', kcal: 240, unit: '100 g', portion: 250, emoji: '🍟', note: 'Approximate recipe average; ingredients and cooking method vary' },
-  { id: 'honey-soy-chicken', name: 'Honey soy chicken', region: 'Oceania', category: 'Chicken', kcal: 190, unit: '100 g', portion: 180, emoji: '🍗', note: 'Approximate recipe average; ingredients and cooking method vary' },,
+  { id: 'honey-soy-chicken', name: 'Honey soy chicken', region: 'Oceania', category: 'Chicken', kcal: 190, unit: '100 g', portion: 180, emoji: '🍗', note: 'Approximate recipe average; ingredients and cooking method vary' },
   { id: 'bohri-dabba', name: 'Bohri thaal (mixed meal)', region: 'South Asia', category: 'Main', kcal: 190, unit: '100 g', portion: 450, emoji: '🍱', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'bohri-mutton-rice', name: 'Bohri masala rice with mutton', region: 'South Asia', category: 'Mutton', kcal: 210, unit: '100 g', portion: 300, emoji: '🍛', note: 'Approximate recipe average; family recipes and preparation vary' },
   { id: 'bohri-kheema', name: 'Bohri kheema', region: 'South Asia', category: 'Mutton', kcal: 230, unit: '100 g', portion: 180, emoji: '🍲', note: 'Approximate recipe average; family recipes and preparation vary' },
@@ -829,7 +829,7 @@ function App() {
                 <Globe2 size={15} /> 9 cuisine regions
               </span>
               <span>
-                <Utensils size={15} /> 50+ foods
+                <Utensils size={15} /> {foods.length}+ foods
               </span>
             </div>
           </div>
