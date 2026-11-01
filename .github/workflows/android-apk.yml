@@ -34,7 +34,7 @@ jobs:
       - name: Generate WorldBite Android launcher icons from the site's 512px app icon
         run: |
           npm install --no-save sharp
-          node scripts/generate-android-icons.mjs public/icons/icon-512.png android
+          node scripts/generate-android-icons.mjs public/icons/worldbite-leaf.png android
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
