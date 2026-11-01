@@ -693,6 +693,561 @@ const foods: Food[] = [
   { id: 'lamb-kofta', name: 'Lamb kofta', region: 'Middle East', category: 'Mutton', kcal: 260, unit: '100 g', portion: 150, emoji: '🍢', note: 'Approximate recipe average; family recipes and preparation vary' },
 ];
 
+const extraFoods: Food[] = [
+  {
+    "id": "dal-makhani",
+    "name": "Dal makhani",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🥣",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chole-bhature",
+    "name": "Chole bhature",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 260,
+    "unit": "100 g",
+    "portion": 300,
+    "emoji": "🍛",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "rajma-chawal",
+    "name": "Rajma chawal",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 150,
+    "unit": "100 g",
+    "portion": 300,
+    "emoji": "🍚",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "kadhi-pakora",
+    "name": "Kadhi pakora",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 145,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🥣",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "veg-pulao",
+    "name": "Vegetable pulao",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 155,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🍚",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "jeera-rice",
+    "name": "Jeera rice",
+    "region": "South Asia",
+    "category": "Staple",
+    "kcal": 145,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🍚",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "besan-chilla",
+    "name": "Besan chilla",
+    "region": "South Asia",
+    "category": "Breakfast",
+    "kcal": 190,
+    "unit": "100 g",
+    "portion": 120,
+    "emoji": "🥞",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "thepla",
+    "name": "Methi thepla",
+    "region": "South Asia",
+    "category": "Bread",
+    "kcal": 290,
+    "unit": "100 g",
+    "portion": 90,
+    "emoji": "🫓",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "aloo-gobi",
+    "name": "Aloo gobi",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 115,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🥔",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "baingan-bharta",
+    "name": "Baingan bharta",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 125,
+    "unit": "100 g",
+    "portion": 160,
+    "emoji": "🍆",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "bhindi-masala",
+    "name": "Bhindi masala",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 135,
+    "unit": "100 g",
+    "portion": 160,
+    "emoji": "🥬",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "veg-korma",
+    "name": "Vegetable korma",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🍲",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chicken-65",
+    "name": "Chicken 65",
+    "region": "South Asia",
+    "category": "Chicken",
+    "kcal": 245,
+    "unit": "100 g",
+    "portion": 150,
+    "emoji": "🍗",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "egg-curry",
+    "name": "Egg curry",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 155,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🍛",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "fish-amritsari",
+    "name": "Amritsari fish",
+    "region": "South Asia",
+    "category": "Seafood",
+    "kcal": 225,
+    "unit": "100 g",
+    "portion": 150,
+    "emoji": "🐟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "prawn-biryani",
+    "name": "Prawn biryani",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 175,
+    "unit": "100 g",
+    "portion": 280,
+    "emoji": "🍤",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chicken-korma",
+    "name": "Chicken korma",
+    "region": "South Asia",
+    "category": "Chicken",
+    "kcal": 190,
+    "unit": "100 g",
+    "portion": 200,
+    "emoji": "🍛",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "mutton-keema",
+    "name": "Mutton keema",
+    "region": "South Asia",
+    "category": "Main",
+    "kcal": 215,
+    "unit": "100 g",
+    "portion": 160,
+    "emoji": "🍲",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "shami-kebab",
+    "name": "Shami kebab",
+    "region": "South Asia",
+    "category": "Snack",
+    "kcal": 235,
+    "unit": "100 g",
+    "portion": 100,
+    "emoji": "🍢",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "tandoori-fish",
+    "name": "Tandoori fish",
+    "region": "South Asia",
+    "category": "Seafood",
+    "kcal": 160,
+    "unit": "100 g",
+    "portion": 170,
+    "emoji": "🐟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "falafel-wrap",
+    "name": "Falafel wrap",
+    "region": "Middle East",
+    "category": "Main",
+    "kcal": 225,
+    "unit": "100 g",
+    "portion": 250,
+    "emoji": "🌯",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chicken-shish-kebab",
+    "name": "Chicken shish kebab",
+    "region": "Middle East",
+    "category": "Chicken",
+    "kcal": 185,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🍢",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "fattoush",
+    "name": "Fattoush salad",
+    "region": "Middle East",
+    "category": "Salad",
+    "kcal": 115,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🥗",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "lamb-tagine",
+    "name": "Lamb tagine",
+    "region": "Middle East",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 240,
+    "emoji": "🍲",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "spinach-fatayer",
+    "name": "Spinach fatayer",
+    "region": "Middle East",
+    "category": "Bakery",
+    "kcal": 275,
+    "unit": "100 g",
+    "portion": 100,
+    "emoji": "🥟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chicken-momos",
+    "name": "Chicken momos",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 205,
+    "unit": "100 g",
+    "portion": 160,
+    "emoji": "🥟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "veg-momos",
+    "name": "Vegetable momos",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 185,
+    "unit": "100 g",
+    "portion": 150,
+    "emoji": "🥟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "pad-krapow",
+    "name": "Thai pad krapow",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 175,
+    "unit": "100 g",
+    "portion": 280,
+    "emoji": "🍛",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "japchae",
+    "name": "Korean japchae",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 200,
+    "emoji": "🍜",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "gyoza-pan-fried",
+    "name": "Pan-fried gyoza",
+    "region": "East Asia",
+    "category": "Snack",
+    "kcal": 235,
+    "unit": "100 g",
+    "portion": 120,
+    "emoji": "🥟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "okonomiyaki",
+    "name": "Okonomiyaki",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 185,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🥞",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "udon-noodle-soup",
+    "name": "Udon noodle soup",
+    "region": "East Asia",
+    "category": "Soup",
+    "kcal": 80,
+    "unit": "100 g",
+    "portion": 400,
+    "emoji": "🍜",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "tempura-prawns",
+    "name": "Prawn tempura",
+    "region": "East Asia",
+    "category": "Seafood",
+    "kcal": 240,
+    "unit": "100 g",
+    "portion": 120,
+    "emoji": "🍤",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "mapo-tofu",
+    "name": "Mapo tofu",
+    "region": "East Asia",
+    "category": "Main",
+    "kcal": 135,
+    "unit": "100 g",
+    "portion": 200,
+    "emoji": "🍲",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "risotto",
+    "name": "Mushroom risotto",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 250,
+    "emoji": "🍚",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "spaghetti-bolognese",
+    "name": "Spaghetti bolognese",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 280,
+    "emoji": "🍝",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "gnocchi",
+    "name": "Potato gnocchi",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 160,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🍝",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "paella-seafood",
+    "name": "Seafood paella",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 170,
+    "unit": "100 g",
+    "portion": 280,
+    "emoji": "🥘",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "moussaka",
+    "name": "Greek moussaka",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 175,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🍆",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "croque-monsieur",
+    "name": "Croque monsieur",
+    "region": "Europe",
+    "category": "Main",
+    "kcal": 285,
+    "unit": "100 g",
+    "portion": 160,
+    "emoji": "🥪",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "jollof-chicken",
+    "name": "Jollof rice with chicken",
+    "region": "Africa",
+    "category": "Main",
+    "kcal": 175,
+    "unit": "100 g",
+    "portion": 300,
+    "emoji": "🍗",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "doro-wat",
+    "name": "Ethiopian doro wat",
+    "region": "Africa",
+    "category": "Main",
+    "kcal": 165,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🍲",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "ugali",
+    "name": "Ugali",
+    "region": "Africa",
+    "category": "Staple",
+    "kcal": 140,
+    "unit": "100 g",
+    "portion": 180,
+    "emoji": "🍚",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "bunny-chow",
+    "name": "Bunny chow",
+    "region": "Africa",
+    "category": "Main",
+    "kcal": 180,
+    "unit": "100 g",
+    "portion": 300,
+    "emoji": "🍞",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "feijoada",
+    "name": "Brazilian feijoada",
+    "region": "Latin America",
+    "category": "Main",
+    "kcal": 145,
+    "unit": "100 g",
+    "portion": 280,
+    "emoji": "🥘",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "chicken-enchilada",
+    "name": "Chicken enchilada",
+    "region": "Latin America",
+    "category": "Main",
+    "kcal": 190,
+    "unit": "100 g",
+    "portion": 220,
+    "emoji": "🌮",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "cheese-quesadilla",
+    "name": "Cheese quesadilla",
+    "region": "Latin America",
+    "category": "Snack",
+    "kcal": 295,
+    "unit": "100 g",
+    "portion": 140,
+    "emoji": "🧀",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "empanada-beef",
+    "name": "Beef empanada",
+    "region": "Latin America",
+    "category": "Bakery",
+    "kcal": 275,
+    "unit": "100 g",
+    "portion": 110,
+    "emoji": "🥟",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "clam-chowder",
+    "name": "Clam chowder",
+    "region": "North America",
+    "category": "Soup",
+    "kcal": 105,
+    "unit": "100 g",
+    "portion": 300,
+    "emoji": "🥣",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  },
+  {
+    "id": "lamington",
+    "name": "Lamington",
+    "region": "Oceania",
+    "category": "Dessert",
+    "kcal": 350,
+    "unit": "100 g",
+    "portion": 80,
+    "emoji": "🍰",
+    "note": "Approximate recipe average; ingredients and cooking method vary"
+  }
+];
+foods.push(...extraFoods);
+
+
 const today = () => new Date().toLocaleDateString('en-CA');
 const regions = [
   'All regions',
@@ -774,10 +1329,10 @@ function App() {
     if (!file.type.startsWith('image/')) { setSnapError('Please choose an image file.'); return; }
     if (file.size > 6 * 1024 * 1024) { setSnapError('Please choose an image smaller than 6 MB.'); return; }
     setSnapBusy(true); setSnapError('');
-    setSnapImage(URL.createObjectURL(file));
+    const sourceUrl = URL.createObjectURL(file);
+    setSnapImage(previous => { if (previous.startsWith('blob:')) URL.revokeObjectURL(previous); return sourceUrl; });
     try {
       // Resize/compress photos before upload so they fit serverless request limits.
-      const sourceUrl = URL.createObjectURL(file);
       const imageData = await new Promise<string>((resolve, reject) => {
         const image = new Image();
         image.onload = () => {
@@ -923,7 +1478,7 @@ function App() {
         </section>
         <section className="snap-card" style={{ marginTop: 24, padding: 22, borderRadius: 20, background: "#f0f8f3" }}>
           <div className="daily-top"><div><span className="section-kicker">WORLD BITE SNAP</span><h2>Scan your plate</h2><p>Take a photo or choose a food picture to estimate the dish and calories.</p></div>
-          <label className="custom-btn" style={{ cursor: snapBusy ? "wait" : "pointer" }}>{snapBusy ? "Analyzing…" : "📸 Snap food"}<input type="file" accept="image/*" capture="environment" disabled={snapBusy} onChange={e => analyzeSnap(e.target.files?.[0])} style={{ display: "none" }} /></label></div>
+          <label className="custom-btn" style={{ cursor: snapBusy ? "wait" : "pointer" }}>{snapBusy ? "Analyzing…" : "📸 Snap food"}<input type="file" accept="image/*" capture="environment" disabled={snapBusy} onChange={e => { const file = e.target.files?.[0]; void analyzeSnap(file); e.currentTarget.value = ""; }} style={{ display: "none" }} /></label></div>
           {snapImage && <img src={snapImage} alt="Selected meal" style={{ display: "block", width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 16, marginTop: 14 }} />}
           {snapBusy && <p role="status">Looking at the dish and estimating a typical portion…</p>}
           {snapError && <p role="alert" style={{ color: "#b42318", marginTop: 10 }}>{snapError}</p>}
