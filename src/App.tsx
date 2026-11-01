@@ -1262,6 +1262,12 @@ const regions = [
   'Everywhere',
 ];
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+const loadCustomFoods = (): Food[] => {
+  try {
+    const value = JSON.parse(localStorage.getItem('worldbite-custom-foods') || '[]');
+    return Array.isArray(value) ? value : [];
+  } catch { return []; }
+};
 const loadEntries = (): Entry[] => {
   try {
     return JSON.parse(localStorage.getItem('worldbite-entries') || '[]');
@@ -1287,7 +1293,7 @@ function App() {
   const [customKcal, setCustomKcal] = useState('');
   const [customGrams, setCustomGrams] = useState('100');
   const [customRegion, setCustomRegion] = useState('Everywhere');
-  const [customFoods, setCustomFoods] = useState<Food[]>([]);
+  const [customFoods, setCustomFoods] = useState<Food[]>(loadCustomFoods);
   const [notice, setNotice] = useState('');
   const [snapImage, setSnapImage] = useState('');
   const [snapBusy, setSnapBusy] = useState(false);
@@ -1412,7 +1418,9 @@ function App() {
       emoji: '🍽️',
       note: 'Your entered value per 100 g',
     };
-    setCustomFoods([...customFoods, food]);
+    const nextCustomFoods = [...customFoods, food];
+    setCustomFoods(nextCustomFoods);
+    try { localStorage.setItem('worldbite-custom-foods', JSON.stringify(nextCustomFoods)); } catch { setNotice('Could not save custom food on this device'); }
     setSelected(food);
     setServingUnit('g');
     setServingAmount(g);
