@@ -1361,7 +1361,7 @@ function App() {
         image.onerror = () => { URL.revokeObjectURL(sourceUrl); reject(new Error('Could not open this photo.')); };
         image.src = sourceUrl;
       });
-      const response = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ image: imageData }) });
+      const response = await fetch('https://worldbite-rzma.vercel.app/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ image: imageData }) });
       const responseText = await response.text();
       let result: any;
       try {
