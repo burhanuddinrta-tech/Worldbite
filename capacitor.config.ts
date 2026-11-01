@@ -4,10 +4,7 @@ const config: CapacitorConfig = {
   appId: 'com.worldbite.calories',
   appName: 'WorldBite',
   webDir: 'dist',
-  bundledWebRuntime: false,
-  server: {
-    url: 'https://worldbite-rzma.vercel.app'
-  }
+  bundledWebRuntime: false
 };
 
 export default config;
