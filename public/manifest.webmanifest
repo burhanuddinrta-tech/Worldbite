@@ -7,22 +7,10 @@
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "theme_color": "#237a58",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/worldbite-leaf.svg?v=3",
+      "src": "/icons/worldbite-leaf.svg?v=4",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
