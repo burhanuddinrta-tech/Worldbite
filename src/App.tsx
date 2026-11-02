@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Search,
   Plus,
@@ -1262,6 +1262,22 @@ const regions = [
   'Everywhere',
 ];
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+
+const APP_BUILD = 2026110201;
+const LAST_SEEN_RELEASE_KEY = 'worldbite-last-seen-release';
+const UPDATE_REQUEST_KEY = 'worldbite-update-requested-build';
+
+type ReleaseInfo = {
+  build: number;
+  version?: string;
+  title?: string;
+  whatsNew?: string[];
+};
+
+type ReleaseNotice = {
+  mode: 'announcement' | 'update';
+  release: ReleaseInfo;
+};
 const loadCustomFoods = (): Food[] => {
   try {
     const value = JSON.parse(localStorage.getItem('worldbite-custom-foods') || '[]');
@@ -1298,6 +1314,107 @@ function App() {
   const [snapImage, setSnapImage] = useState('');
   const [snapBusy, setSnapBusy] = useState(false);
   const [snapError, setSnapError] = useState('');
+  const [releaseNotice, setReleaseNotice] = useState<ReleaseNotice | null>(null);
+  const [updateRefreshing, setUpdateRefreshing] = useState(false);
+
+  useEffect(() => {
+    try {
+      const requestedBuild = Number(localStorage.getItem(UPDATE_REQUEST_KEY) || '0');
+      if (requestedBuild > 0 && APP_BUILD >= requestedBuild) {
+        localStorage.setItem(LAST_SEEN_RELEASE_KEY, String(requestedBuild));
+        localStorage.removeItem(UPDATE_REQUEST_KEY);
+      }
+    } catch {
+      // Storage can be unavailable in restricted browser modes.
+    }
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    const checkForUpdates = async () => {
+      try {
+        const response = await fetch(`/version.json?check=${Date.now()}`, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' },
+        });
+        if (!response.ok) return;
+
+        const release = (await response.json()) as ReleaseInfo;
+        const remoteBuild = Number(release.build);
+        if (!Number.isSafeInteger(remoteBuild) || remoteBuild <= 0) return;
+
+        const lastSeenBuild = Number(localStorage.getItem(LAST_SEEN_RELEASE_KEY) || '0');
+
+        if (remoteBuild > APP_BUILD) {
+          if (remoteBuild > lastSeenBuild && active) {
+            setReleaseNotice({ mode: 'update', release });
+          }
+          return;
+        }
+
+        // One-time rollout note for existing users who already have local meal data.
+        if (remoteBuild === APP_BUILD && lastSeenBuild < APP_BUILD) {
+          const hasSavedData =
+            localStorage.getItem('worldbite-entries') !== null ||
+            localStorage.getItem('worldbite-custom-foods') !== null;
+          if (hasSavedData && active) {
+            setReleaseNotice({ mode: 'announcement', release });
+          }
+        }
+      } catch {
+        // Update checks are best-effort and must never interrupt food logging or Snap.
+      }
+    };
+
+    void checkForUpdates();
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') void checkForUpdates();
+    }, 5 * 60 * 1000);
+    window.addEventListener('focus', checkForUpdates);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', checkForUpdates);
+    };
+  }, []);
+
+  const acknowledgeRelease = () => {
+    if (releaseNotice) {
+      try {
+        localStorage.setItem(LAST_SEEN_RELEASE_KEY, String(releaseNotice.release.build));
+      } catch {
+        // The notice can still be closed if storage is unavailable.
+      }
+    }
+    setReleaseNotice(null);
+  };
+
+  const refreshForUpdate = async () => {
+    if (!releaseNotice || releaseNotice.mode !== 'update') return;
+    setUpdateRefreshing(true);
+
+    try {
+      localStorage.setItem(UPDATE_REQUEST_KEY, String(releaseNotice.release.build));
+    } catch {
+      // The cache-busted navigation below still attempts the update.
+    }
+
+    try {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(registration => registration.update().catch(() => undefined)));
+      }
+    } catch {
+      // No service worker is currently registered; ignore unsupported or stale registrations.
+    }
+
+    const updateUrl = new URL(window.location.href);
+    updateUrl.searchParams.set('wb-refresh', `${releaseNotice.release.build}-${Date.now()}`);
+    window.location.replace(updateUrl.toString());
+  };
+
   const allFoods = useMemo(() => [...foods, ...customFoods], [customFoods]);
   const filtered = useMemo(
     () =>
@@ -1856,6 +1973,52 @@ function App() {
         <div className="toast">
           <Check size={17} />
           {notice}
+        </div>
+      )}
+      {releaseNotice && (
+        <div className="modal-backdrop update-backdrop" onClick={acknowledgeRelease}>
+          <section
+            className="portion-modal updates-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="release-title"
+            onClick={event => event.stopPropagation()}
+          >
+            <button
+              className="modal-close icon-btn"
+              onClick={acknowledgeRelease}
+              aria-label="Close update notice"
+            >
+              <X size={19} />
+            </button>
+            <div className="update-icon"><Leaf size={25} /></div>
+            <span className="section-kicker">
+              {releaseNotice.mode === 'update' ? 'UPDATE AVAILABLE' : 'WORLD BITE UPDATE'}
+            </span>
+            <h2 id="release-title">{releaseNotice.release.title || "What's new"}</h2>
+            <p className="update-copy">
+              {releaseNotice.mode === 'update'
+                ? 'A newer version is ready. Update now to load the latest WorldBite. Your saved meal log and custom foods stay on this device.'
+                : 'WorldBite has been updated. Here are the latest improvements.'}
+            </p>
+            <ul className="update-list">
+              {(releaseNotice.release.whatsNew || []).map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            <div className="update-actions">
+              {releaseNotice.mode === 'update' ? (
+                <>
+                  <button className="primary-btn" onClick={() => void refreshForUpdate()} disabled={updateRefreshing}>
+                    {updateRefreshing ? 'Preparing update…' : 'Update now'}
+                  </button>
+                  <button className="text-btn" onClick={acknowledgeRelease}>Later</button>
+                </>
+              ) : (
+                <button className="primary-btn" onClick={acknowledgeRelease}>Got it</button>
+              )}
+            </div>
+          </section>
         </div>
       )}
     </div>
