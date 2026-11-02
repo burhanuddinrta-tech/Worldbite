@@ -696,3 +696,59 @@ flex-direction: column;
 @media (max-width: 480px) {
   .serving-controls { grid-template-columns: 1fr; }
 }
+
+
+/* In-app release notice */
+.update-backdrop {
+  z-index: 30;
+}
+.updates-modal {
+  width: min(520px, 100%);
+  max-height: 90vh;
+}
+.update-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  color: #fff;
+  background: #237a58;
+}
+.updates-modal h2 {
+  margin: 9px 0;
+  color: #183b32;
+}
+.update-copy {
+  color: #6a877b;
+  line-height: 1.65;
+}
+.update-list {
+  margin: 14px 0 22px;
+  padding-left: 22px;
+  color: #47695a;
+  line-height: 1.7;
+}
+.update-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.update-actions .primary-btn {
+  flex: 1;
+  min-height: 46px;
+}
+.update-actions .text-btn {
+  min-height: 46px;
+}
+@media (max-width: 480px) {
+  .update-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .update-actions .primary-btn,
+  .update-actions .text-btn {
+    width: 100%;
+  }
+}
