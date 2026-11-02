@@ -1,0 +1,13 @@
+{
+  "version": "2026.11.02.1",
+  "build": 2026110201,
+  "releasedAt": "2026-11-02",
+  "title": "A fresher WorldBite is ready",
+  "whatsNew": [
+    "WorldBite now checks for new releases and shows an in-app update notice.",
+    "Use Update now to refresh the latest app safely.",
+    "Your saved meal log and custom foods remain stored on this device.",
+    "The existing food library, portion controls and Snap flow are preserved."
+  ],
+  "minimumAppBuild": 2026110201
+}
