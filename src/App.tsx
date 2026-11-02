@@ -1353,14 +1353,9 @@ function App() {
           return;
         }
 
-        // One-time rollout note for existing users who already have local meal data.
-        if (remoteBuild === APP_BUILD && lastSeenBuild < APP_BUILD) {
-          const hasSavedData =
-            localStorage.getItem('worldbite-entries') !== null ||
-            localStorage.getItem('worldbite-custom-foods') !== null;
-          if (hasSavedData && active) {
-            setReleaseNotice({ mode: 'announcement', release });
-          }
+        // One-time release note for this build, including existing installs with an empty log.
+        if (remoteBuild === APP_BUILD && lastSeenBuild < APP_BUILD && active) {
+          setReleaseNotice({ mode: 'announcement', release });
         }
       } catch {
         // Update checks are best-effort and must never interrupt food logging or Snap.
