@@ -10,7 +10,13 @@
   "theme_color": "#237a58",
   "icons": [
     {
-      "src": "/icons/worldbite-leaf.svg?v=4",
+      "src": "/icons/worldbite-leaf.png?v=5",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/worldbite-leaf.svg?v=5",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
