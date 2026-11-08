@@ -1,13 +1,12 @@
 {
-  "version": "2026.11.02.1",
-  "build": 2026110201,
-  "releasedAt": "2026-11-02",
-  "title": "A fresher WorldBite is ready",
+  "version": "2026.11.08.1",
+  "build": 2026110801,
+  "releasedAt": "2026-11-08",
+  "title": "A refreshed WorldBite is ready",
   "whatsNew": [
-    "WorldBite now checks for new releases and shows an in-app update notice.",
-    "Use Update now to refresh the latest app safely.",
-    "Your saved meal log and custom foods remain stored on this device.",
-    "The existing food library, portion controls and Snap flow are preserved."
+    "Expanded the food library from 46 to 146 dishes across regions.",
+    "Updated install metadata to use the green leaf app icon.",
+    "The in-app update notice continues to preserve your saved meal log and custom foods."
   ],
   "minimumAppBuild": 2026110201
 }
