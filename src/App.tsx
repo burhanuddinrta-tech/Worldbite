@@ -1263,7 +1263,7 @@ const regions = [
 ];
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
 
-const APP_BUILD = 2026110201;
+const APP_BUILD = 2026110801;
 const LAST_SEEN_RELEASE_KEY = 'worldbite-last-seen-release';
 const UPDATE_REQUEST_KEY = 'worldbite-update-requested-build';
 
